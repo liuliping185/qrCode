@@ -1,0 +1,28 @@
+body{
+  background: #fff;
+}
+
+#main{
+  width:100%;
+  margin-top:30%;
+}
+
+.imginfo{
+  width:22%;
+  height:22%;
+}
+
+.inputinfo{
+  font-family:苹方;
+  font-size:2rem;
+  height:3rem;
+}
+
+.btn{
+  font-size:1rem;
+}
+
+.btninfo{
+  height:3rem;
+  line-height:3rem;
+}

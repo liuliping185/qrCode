@@ -1,0 +1,194 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>首页头</title>
+    <link rel="stylesheet" type="text/css" href="./css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="./css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="./css/common/common.css"/>
+    <link rel="stylesheet" type="text/css" href="./css/bizcss/index.css"/>
+
+</head>
+<body>
+
+<header id="header">
+  <div id="headerdiv">
+    <h1>首&nbsp;&nbsp;&nbsp;&nbsp;页</h1>
+    <div class='right' tapmode onclick='scanning()'></div>
+  </div>
+</header>
+
+<div id="wrap" class="flex-wrap flex-vertical">
+    <div id="main" class="flex-con words" style="overflow:hidden;">
+        <!-- <div class="aui-content aui-margin-b-15">
+            <ul class="aui-list aui-media-list" id="infoList" style="overflow:hidden;">
+
+            </ul>
+        </div> -->
+    </div>
+    <footer id="footer" class="border-t">
+        <ul class="flex-wrap" >
+            <li tapmode onclick="randomSwitchBtn( this,'' );" class="flex-con active" >首页</li>
+            <li tapmode onclick="randomSwitchBtn( this,'task.html' );" class="flex-con" >任务</li>
+            <li tapmode onclick="randomSwitchBtn( this,'datum.html' );" class="flex-con" >资料</li>
+            <li tapmode onclick="randomSwitchBtn( this,'set.html' );" class="flex-con" >设置</li>
+        </ul>
+    </footer>
+
+</div>
+</body>
+</html>
+
+<script type="text/javascript" src="script/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="script/common/path.js"></script>
+<script type="text/javascript" src="script/common/common.js"></script>
+<script type="text/javascript" src="script/api.js"></script>
+<script type="text/javascript" src="script/aui-toast.js" ></script>
+<!-- <script type="text/javascript" src="script/bizjs/index.js"></script> -->
+<!-- <script type="text/javascript" src="script/bizjs/footer.js"></script> -->
+<script>
+apiready = function(){
+  islogin();
+  issignout();
+  var headerH = $api.byId('header');
+  headerH = $api.offset(header).h;
+  var footerH = $api.byId('footer');
+  footerH = $api.offset(footer).h;
+  api.openFrame({
+      name: 'index_frame',
+      url: 'index_frame.html',
+      rect: {
+          x: 0,
+          y: headerH,
+          w: "auto",
+          h: api.winHeight - footerH - headerH
+      },
+      pageParam: {
+          name: 'test'
+      },
+      reload: true,
+      bounces: true,
+      bgColor: 'rgba(0,0,0,0)',
+      vScrollBarEnabled: true,
+      hScrollBarEnabled: true
+  });
+
+  api.parseTapmode();
+}
+
+function scanning(){
+  var FNScanner = api.require('FNScanner');
+
+  FNScanner.openScanner({
+      autorotation: true,
+      saveImg: {
+        path: 'fs://qrCode.jpg',  //字符串类型；保存的文件路径；若路径不存在，则创建此路径，只支持fs://协议
+        w: 200,              //（可选项）数字类型；生成图片的宽度，默认：200
+        h: 200
+      }
+    //  saveToAlbum: true
+  }, function(ret, err) {
+      if (ret) {
+          // var ret = JSON.stringify(ret);
+          // alert(ret);
+
+          if("cancel" == ret.eventType){
+              FNScanner.closeView();
+          }else{
+            // alert(ret.content);
+            if(ret.content){
+              var str = getCaption(ret.content,"?");
+              // alert(str);
+              if(str && str!=ret.content){
+                var uType = getCaption(ret.content,"\=");
+                var qid = ret.content.match(/=(\S*)&/)[1];
+                // alert(uType + "====" + qid + "===" + localStorage.userid);
+
+                localStorage.setItem("qid",qid);
+                localStorage.setItem("uType",uType);
+
+                var uidinfo = finduidbyqid(qid);
+                uidinfo = JSON.parse(uidinfo);
+                localStorage.setItem("uid",uidinfo.info.qUid);
+
+                // alert(uType + "===" + qid + "===" + uidinfo.info.qUid)
+
+                if(3 == Number(uType)){
+                  var messige = findmessige();
+                  localStorage.setItem("messige",messige)
+
+                  var img = findimg()
+                  localStorage.setItem("img",img)
+                }
+
+                if(toshowtask(localStorage.userid, qid)){
+                      api.openWin({
+                          name: 'showtask',
+                          url: 'html/task/showtask.html',
+                          reload: true,
+                          scaleEnabled:true
+                      });
+                }
+              }else{
+                alert("无效的二维码！");
+                window.location.reload();
+              }
+            }
+          }
+      }
+  });
+
+}
+
+function toshowtask(userid,qid){
+	var result = false;
+	$.ajax({
+		type  : "POST",
+		url   : path + "qrcode/isSeeUsingTemplate_form.action",
+		data  : {
+      "userid": userid,
+      "qid": qid
+    },
+		async : false,
+		error : function(request){
+		},
+		success : function(data){
+      // alert("data====" + data);
+			// var data = JSON.parse(data);
+      if(data){
+        result = true;
+      }
+		}
+	});
+	return result;
+}
+
+function ref(){
+  window.location.reload();
+}
+
+// 随意切换按钮
+function randomSwitchBtn( tag,mineUrl ) {
+  localStorage.setItem("qrcodestatus","");
+  if(mineUrl){
+      api.closeFrame({
+          name: 'index_frame'
+      });
+      api.openWin({
+        name : "root",
+        url : mineUrl,
+        animation:{
+            type:"movein",                //动画类型（详见动画类型常量）
+            subType:"from_right",       //动画子类型（详见动画子类型常量）
+            duration:300                //动画过渡时间，默认300毫秒
+        },
+        pageParam:{
+          name: "test"
+        }
+      });
+  }
+ }
+
+</script>

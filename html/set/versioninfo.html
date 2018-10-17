@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>版本信息</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/common/common.css"/>
+<style>
+li{
+  height: 3.5rem;
+  line-height: 3rem;
+  font-size: 14px;
+}
+</style>
+</head>
+<body>
+  <header id="header">
+    <h1>关&nbsp&nbsp&nbsp&nbsp于</h1>
+    <div class='left' tapmode onclick='api.closeWin()'></div>
+  </header>
+
+<div id="wrap" class="flex-wrap flex-vertical" style="padding-top:70px;">
+    <div id="main" class="flex-con words" style="overflow:hidden;">
+      <div class="aui-content aui-margin-b-15">
+          <ul class="aui-list aui-media-list">
+            <li class="aui-list-item aui-list-item-middle">
+                <div class="aui-media-list-item-inner">
+                    <div class="aui-list-item-media" style="width: 2rem;">
+                        <img class="iconimg" src="../../image/set/version.png"/>
+                    </div>
+                    <div class="aui-list-item-inner aui-list-item-arrow">
+                        <span>系统版本</span>
+                        <span id="version"></span>
+                    </div>
+                </div>
+            </li>
+            <!-- <li class="aui-list-item aui-list-item-middle" onclick="modifypassword()">
+                <div class="aui-media-list-item-inner">
+                    <div class="aui-list-item-media" style="width: 2rem;">
+                        <img class="iconimg" src="../../image/set/modifypassword.png"/>
+                    </div>
+                    <div class="aui-list-item-inner aui-list-item-arrow">
+                        <span>运营商</span>
+                        <span id="operator"></span>
+                    </div>
+                </div>
+            </li> -->
+          </ul>
+      </div>
+    </div>
+</div>
+</body>
+</html>
+
+<script type="text/javascript" src="../../script/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="../../script/common/path.js"></script>
+<script type="text/javascript" src="../../script/common/common.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script>
+apiready = function () {
+  $("#version").html(api.appVersion);
+  $("#operator").html(api.operator);
+}
+
+
+
+</script>

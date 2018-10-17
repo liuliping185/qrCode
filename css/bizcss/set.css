@@ -1,0 +1,67 @@
+#header{
+  height: 35%;
+  background-color: #06a3f8;
+}
+
+#htop{
+  text-align: center;
+  padding-top: 4.5rem;
+}
+
+#avatar{
+  display: inline-block;
+  width: 5rem;
+  height: 5rem;
+  border-radius:50%;
+}
+
+#hdown{
+  text-align: center;
+  color: #fff;
+  margin-top: 0.5rem;
+}
+
+li{
+  margin-bottom: 0.2rem;
+  margin-top: 0.5rem;
+}
+
+hr{
+  height: 2px;
+  color: #000;
+}
+
+.icon{
+  float: left;
+  padding-left: 1rem;
+}
+
+.iconimg{
+  width: 1.5rem;
+  height: 1.2rem;
+
+}
+
+.words{
+  height: 2rem;
+  line-height: 2rem;
+  padding-left: 5rem;
+}
+
+.lineinfo{
+  border-bottom: 1px dashed #9d9d9d;
+  padding-top: 0.5rem;
+}
+
+#tologinbtn{
+  text-align:center;
+  background-color:#ff0000;
+  width: 50%;
+  margin-left:25%;
+  height:2.5rem;
+  line-height:2.5rem;
+  border-radius:5px;
+  color:#fff;
+  font-size:1.1rem;
+  margin-top:2rem;
+}

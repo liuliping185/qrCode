@@ -1,0 +1,190 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>用户登录</title>
+    <link rel="stylesheet" type="text/css" href="./css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="./css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="./css/common/common.css"/>
+    <link rel="stylesheet" type="text/css" href="./css/bizcss/login.css"/>
+
+    <script type="text/javascript" src="script/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="script/common/path.js"></script>
+    <script type="text/javascript" src="script/api.js"></script>
+
+    <style>
+      li{
+        height: 3.8rem;
+        font-size: 18px;
+      }
+      input::-webkit-input-placeholder {
+         font-size: 18px;
+      }
+      #btn{
+        padding: 3px 20px 1px;
+        margin-top: 50px;
+      }
+    </style>
+</head>
+<body>
+<div id="wrap" class="flex-wrap flex-vertical">
+  <div id="main" align="center">
+	<img src="image/logo.png" class="imginfo" >
+  </div>
+
+	 <div align="center" style="padding: 10px 20px 1px;margin-top:15%;">
+       <div class="aui-content aui-margin-b-15">
+           <ul class="aui-list aui-form-list">
+               <li class="aui-list-item">
+                   <div class="aui-list-item-inner">
+                       <div class="aui-list-item-label-icon">
+                           <i class="aui-iconfont aui-icon-mobile"></i>
+                       </div>
+                       <div class="aui-list-item-input">
+                           <input style="font-size:18px;" type="text" class="inputinfo" style="height:3rem;" id="username" placeholder="请输入您的账号">
+                       </div>
+                   </div>
+               </li>
+               <li class="aui-list-item">
+                   <div class="aui-list-item-inner">
+                       <div class="aui-list-item-label-icon">
+                           <i class="aui-iconfont aui-icon-lock"></i>
+                       </div>
+                       <div class="aui-list-item-input" id="passwordText">
+                           <input style="font-size:18px;" type="password" class="inputinfo" style="height:3rem;" id="password" placeholder="请输入密码">
+                       </div>
+                       <!-- <div class="aui-list-item-label-icon">
+                           <i class="aui-iconfont aui-icon-display" onclick="display()"></i>
+                       </div> -->
+                   </div>
+               </li>
+           </ul>
+       </div>
+	</div>
+  <div align="right" style="margin-top:0%;">
+      <!-- <a href="./toBackPwd.html"> -->
+        <span style="font-family:苹方;line-height: 30px;">
+             <input id="remberpassword" type="checkbox" class="aui-checkbox" style="margin-right:0.5rem;width:1.8rem;height:1.8rem;"/>
+             <label style="font-size:18px;color:#000;" for="remberpassword">记住密码&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</label>
+        </span>
+      <!-- </a> -->
+  </div>
+  <div id="btn">
+      <div class="aui-btn aui-btn-success aui-btn-block aui-btn-sm" style="background-color:#03aaf4;height:3rem;line-height:3rem;font-size:14px;" tapmode onclick="login()">
+          <span id="p">登&nbsp;&nbsp;录</span>
+      </div>
+
+      <!-- <div class="aui-btn aui-btn-success aui-btn-block aui-btn-sm" style="background-color:#03aaf4;height:3rem;line-height:3rem;font-size:14px;" tapmode onclick="login1()">
+          <span id="p">登&nbsp;&nbsp;录</span>
+      </div> -->
+  </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="script/aui-toast.js" ></script>
+
+<script>
+  apiready = function(){
+    var lastLoginUser = $api.getStorage('lastLoginUser');
+    if(lastLoginUser){
+      $('#username').val(lastLoginUser.username);
+      $('#password').val(lastLoginUser.password);
+      $('#remberpassword').prop('checked',true);
+    }
+  }
+
+  function login1(){
+//     var apk = api.require('apk');
+// var packageName = apk.getPackageName();
+//
+// alert(packageName);
+    api.openApp({
+        androidPkg: 'Android.intent.action.VIEW',
+        mimeType: 'text/html',
+        uri: 'http://www.baidu.com'
+    }, function(ret, err) {
+        if (ret) {
+            alert(JSON.stringify(ret));
+        } else {
+            alert(JSON.stringify(err));
+        }
+    });
+
+  }
+
+  //登录方法
+  function login(){
+    var toast = new auiToast();
+    toast.loading({
+      title:"正在登录",
+      duration:2000
+    },function(ret){
+      setTimeout(function(){
+
+  		var username = $("#username").val();
+  		var password = $("#password").val();
+  		$.post(path + "userinfo/login.action",{
+  				loginname:username,
+  				password:password
+  			}, function(data) {
+  				// console.log(data);
+  	      var data = JSON.parse(data);
+
+
+  				if (data.success) {
+            $api.setStorage('loginUser', data.infoList);
+            var lastLoginUser={};
+            var rm=$('#remberpassword').prop('checked');
+            if(rm){
+              lastLoginUser.username=username;
+              lastLoginUser.password=password;
+              $api.setStorage('lastLoginUser', lastLoginUser);
+            }else{
+              $api.rmStorage('lastLoginUser');
+            }
+            // var box = document.getElementById('remberpassword');
+            //   if(box.checked){
+            //       localStorage.setItem("password",password);
+            //       localStorage.setItem("username",username);
+            //   }else{
+            //       localStorage.setItem("password","");
+            //       localStorage.setItem("username","");
+            //   }
+
+  						localStorage.setItem("userid",data.infoList.userid);
+              // api.closeFrame({
+              //     name: 'login_frame'
+              // });
+
+
+              api.rebootApp();
+              // api.openWin({
+              //   name : "myInfo",
+              //   url : "index.html",
+              //   animation:{
+              //       type:"movein",                //动画类型（详见动画类型常量）
+              //       subType:"from_right",       //动画子类型（详见动画子类型常量）
+              //       duration:300                //动画过渡时间，默认300毫秒
+              //   }
+              // });
+
+
+              // window.location.href="index.html";
+  				}else{
+            toast.hide()
+            alert("账号密码输入有误，请重新输入！");
+  				}
+  		});
+
+    }, 500)
+  })
+  }
+
+  function display(){
+  	var password = $("#password").val();
+  	$("#passwordText").html("<input type='text' value='" + password + "' style='font-family:苹方;font-size:0.7rem;' id='password' placeholder='请输入密码' onfocus=this.placeholder='' onblur=if(this.placeholder==''){this.placeholder='请输入密码'}>");
+  }
+
+</script>

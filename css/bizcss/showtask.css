@@ -1,0 +1,198 @@
+body{
+  background-color: #fff;
+}
+
+.contant{
+  margin-top:4rem;
+  padding-top: 1rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding-bottom: 3rem;
+}
+
+.title{
+  text-align: center;
+  font-size: 2rem;
+}
+
+#file{
+  margin-left: 15%;
+  width: 70%;
+  margin-top: 1rem;
+}
+
+.filename{
+  font-size: 1.2rem;
+  color: #ff0000;
+}
+
+#infoarea{
+  width: 70%;
+  margin-left: 15%;
+  font-size: 1.4rem;
+  margin-top: 3rem;
+}
+
+.inputinfo{
+  font-size: 1rem;
+  width: 100%;
+  height: 2rem;
+  line-height: 2rem;
+  overflow: auto;
+  border: solid 1px #9d9d9d;
+  border-radius: 5px;
+  margin-top: 0rem;
+  margin-bottom: 0.7rem;
+  padding-left: 5px;
+}
+
+.selectinfo{
+  font-size: 1rem;
+  width: 100%;
+  height: 2.5rem;
+  line-height: 2.5rem;
+  overflow: auto;
+  border: solid 1px #d4d4d4;
+  /*border-radius: 5px;*/
+  margin-top: 0rem;
+  margin-bottom: 0.7rem;
+  background-color: #efefef;
+  padding-left: 5px;
+}
+
+.e_info{
+  margin-top: 0.5rem;
+}
+
+.t_left{
+}
+
+.t_right{
+  width: 60%;
+  margin-left: 0.5rem;
+}
+
+.textareainfo{
+  font-size: 1rem;
+  height: 8rem;
+  line-height: 8rem;
+  overflow: auto;
+  border: solid 1px #9d9d9d;
+  border-radius: 5px;
+  margin-top: 0.5rem;
+  margin-bottom: 0.7rem;
+  padding-left: 5px;
+}
+
+.title_top{
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.checkboxinfo{
+  margin-left: 1rem;
+  font-size: 0.875rem;
+}
+
+.checkboxcon{
+  margin-top: 0.5rem;
+  margin-bottom: 0.7rem;
+}
+
+.checkboxword{
+
+  font-size: 1.2rem;
+}
+
+.t_top_einfo{
+  font-size: 1.1rem;
+  margin-top: 0.3rem;
+  float:right;
+  color:#9d9d9d;
+  margin-right: 15%;
+}
+
+.btnleft{
+  float:left;
+  margin-left:15%;
+  background-color: #13b14f;
+  border-radius:5px;
+  margin-top: 1.5rem;
+}
+
+.btnright{
+  float:right;
+  margin-right:15%;
+  background-color:#f68195;
+  border-radius:5px;
+  margin-top: 1.5rem;
+}
+
+.btnword{
+  padding-left: 1rem;
+  padding-right:1rem;
+  color:#fff;
+  padding-top:0.2rem;
+  padding-bottom:0.2rem;
+}
+
+#stage{
+  text-align: center;
+  padding-top: 6rem;
+  color: blue;
+  /*padding-bottom: 2rem;*/
+}
+
+#check{
+  background-color: #6c94f0;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  color: #fff;
+  border-radius: 5px;
+  float:right;
+  margin-right: 10%;
+  margin-top: 1rem;
+}
+
+.stagepage{
+  padding-left: 9%;
+  padding-right: 9%;
+}
+
+#checkinfo{
+  text-align: left;
+  /*width: 80%;*/
+  /*margin-left: 10%;*/
+  margin-top:1rem;
+  font-size:1rem;
+  color: #000;
+}
+
+.tipon{
+	z-index:9999;
+	position:fixed;
+	top:55%;
+	left:100%;
+	width:300px;
+  /*margin-left:10%;*/
+	height:300px;
+	margin:-180px 0 0 -330px;
+	border-radius:15px;
+	border:solid 2px #666;
+	background-color:#fff;
+	display:none;
+	box-shadow: 0 0 10px #666;
+}
+
+.helpmask {
+	z-index: 9998;
+	position:fixed;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	background:#000;
+	opacity:0.4;
+	filter:alpha(opacity=40);
+	display:none
+}

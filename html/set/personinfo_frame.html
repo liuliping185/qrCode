@@ -1,0 +1,185 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>个人信息</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/common/common.css"/>
+    <style>
+      body{
+        background-color: #fff;
+      }
+      #contant{
+        background-color: #fff;
+      }
+      #btn{
+        padding: 3px 20px 1px;
+        margin-top: 50px;
+      }
+      li{
+        height: 3.5rem;
+        font-size: 14px;
+      }
+      input::-webkit-input-placeholder {
+         font-size: 14px;
+      }
+    </style>
+</head>
+<body>
+  <!-- <form action="http://yada.yadatg.com:8086/QrCodeManage/userinfo/savephoto.action" method="post" enctype="multipart/form-data">
+      <input name="id" value="6"/>
+     <input type="file" name="file" value=""/>
+     <input id="submit_form" type="submit" class="btn btn-success save" value="保存"/>
+  </from> -->
+<div id="wrap" class="flex-wrap flex-vertical">
+    <!-- <div style="margin-top:0%;background-color:#ffffff;">
+      <span style="margin-top:5%;margin-left:4%;padding-bottom:5px;color:#6c6c6c;font-size:0.8rem">上传头像</span>
+    </div> -->
+    <!-- <div style="padding-left:20px;padding-right:20px;background-color:#ffffff;padding-bottom:30px">
+        <div style="margin-top:0px;" align="center">
+            <div class="imgBox" style="margin-top: 1%; overflow:auto; position:relative;" onclick="showAction('1')">
+                <span style="margin-top:10%;">
+                  <img id="headerImg" src="../../image/set/addPic.png"/>
+                  <p style="margin-top:15%;color:#9d9d9d">头像图片</p>
+                </span>
+            </div>
+        </div>
+    </div> -->
+    <!-- <div id="lineinfo"></div> -->
+    <form id="info">
+      <!-- <input name="photo" id="photo" value=""/> -->
+      <input name="id" id="id" hidden="true" value=""/>
+      <div class="aui-content aui-margin-b-15">
+          <ul class="aui-list aui-form-list">
+              <li class="aui-list-item">
+                  <div class="aui-list-item-inner">
+                      <div class="aui-list-item-label">
+                          <span class="words">姓名</span>
+                      </div>
+                      <div class="aui-list-item-input">
+                          <input style="font-size:14px;" class="words" type="text" readonly="readonly"
+                          name="userName" id="userName" value=""/>
+                      </div>
+                  </div>
+              </li>
+              <li class="aui-list-item">
+                  <div class="aui-list-item-inner">
+                      <div class="aui-list-item-label">
+                          <span class="words">联系方式</span>
+                      </div>
+                      <div class="aui-list-item-input">
+                          <input style="font-size:14px;" class="words" type="text" name="phone" id="phone"
+                          placeholder="请输入联系方式"/>
+                      </div>
+                  </div>
+              </li>
+              <li class="aui-list-item">
+                  <div class="aui-list-item-inner">
+                      <div class="aui-list-item-label">
+                          <span class="words">电子邮箱</span>
+                      </div>
+                      <div class="aui-list-item-input">
+                          <input style="font-size:14px;" class="words" type="text" id="email" name="email" placeholder="请输入电子邮箱">
+                      </div>
+                  </div>
+              </li>
+              <li class="aui-list-item">
+                  <div class="aui-list-item-inner">
+                      <div class="aui-list-item-label">
+                          <span class="words">项目组</span>
+                      </div>
+                      <div class="aui-list-item-input">
+                          <input style="font-size:14px;" class="words" type="text" readonly="readonly" id="department" name="department">
+                      </div>
+                  </div>
+              </li>
+          </ul>
+          <div id="btn">
+              <div class="aui-btn aui-btn-success aui-btn-block aui-btn-sm" style="background-color:#03aaf4;height:3rem;line-height:3rem;font-size:14px;" onclick="save()">
+                  <span id="p">确&nbsp;&nbsp;定</span>
+              </div>
+          </div>
+      </div>
+    <!-- <div onclick="save()">保存</div> -->
+</div>
+<form>
+</body>
+</html>
+<script type="text/javascript" src="../../script/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="../../script/common/path.js"></script>
+<script type="text/javascript" src="../../script/common/common.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/common/check.js"></script>
+
+<script>
+  apiready = function(){
+    $("#id").val(localStorage.userid);
+    var userinfo = getuserinfo();
+    if(userinfo){
+      if(userinfo.userName){
+        $("#userName").val(userinfo.userName);
+      }
+      if(userinfo.phone){
+        $("#phone").val(userinfo.phone);
+      }
+      if(userinfo.email){
+        $("#email").val(userinfo.email);
+      }
+      if(userinfo.department){
+        $("#department").val(userinfo.department);
+      }
+    }
+    api.parseTapmode();
+  }
+
+  function save(){
+    var userName = $("#userName").val();
+    var department = $("#department").val();
+    var phone = $("#phone").val();
+    var email = $("#email").val();
+
+    if(phone && false == checkMobile(phone)){
+      api.alert({
+				msg : '联系方式输入有误，请输入手机号格式'
+			});
+			return;
+    }
+
+    if(email && false == checkEmail(email)){
+      api.alert({
+				msg : '电子邮箱输入有误'
+			});
+			return;
+    }
+
+    if(userName && userName.length >19){
+      api.alert({
+        msg: '姓名太长'
+      });
+    }
+
+    if(department && department.length >19){
+      api.alert({
+        msg: '项目组太长'
+      });
+    }
+
+    $.ajax({
+  		type  : "POST",
+  		url   : path + "userinfo/updateUserInfo.action",
+  		data  : $("#info").serialize(),
+  		async : false,
+  		error : function(request){
+  		},
+  		success : function(data){
+        if(data){
+          var data = JSON.parse(data);
+            alert(data.msg);
+        }
+  		}
+  	});
+  }
+</script>

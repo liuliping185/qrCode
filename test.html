@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>扫描</title>
+
+</head>
+<body>
+<div id="t">
+  <input type="text" value="aaa"/>
+</div>
+
+<div id="btn" onclick="save()">
+  save
+</div>
+
+</body>
+</html>
+
+<script type="text/javascript" src="script/jquery-2.1.1.min.js"></script>
+
+<script type="text/javascript">
+function save(){
+  console.log($("#t").formhtml());
+}
+
+(function ($) {
+var oldHTML = $.fn.html;
+$.fn.formhtml = function () {
+if (arguments.length) return oldHTML.apply(this, arguments);
+$("input,textarea,button", this).each(function () {
+this.setAttribute('value', this.value);
+});
+$(":radio,:checkbox", this).each(function () {
+// im not really even sure you need to do this for "checked"
+// but what the heck, better safe than sorry
+if (this.checked) this.setAttribute('checked', 'checked');
+else this.removeAttribute('checked');
+});
+$("option", this).each(function () {
+// also not sure, but, better safe...
+if (this.selected) this.setAttribute('selected', 'selected');
+else this.removeAttribute('selected');
+});
+return oldHTML.apply(this);
+};
+//optional to override real .html() if you want
+// $.fn.html = $.fn.formhtml;
+})(jQuery);
+</script>

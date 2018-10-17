@@ -1,0 +1,1058 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/> -->
+    <!-- <meta name="format-detection" content="telephone=no,email=no,date=no,address=no"> -->
+    <title>工程质量实名制卡片</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/common/common.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/bizcss/index.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/bizcss/img.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/bizcss/datum.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/common/jquery.selectlist.css"/>
+    <style>
+      body{
+        width: 100%;
+        background-color: #fff;
+        overflow-x: hidden;
+        overflow-y: hidden;
+      }
+
+      center{
+        width:180%;
+        height: 100%;
+        background-color: #fff;
+        margin-left: 2rem;
+        padding-right: 2rem;
+        margin-bottom: 3rem;
+        padding-top: 3rem;
+        overflow-x: hidden;
+        overflow-y: hidden;
+      }
+
+      #info{
+        background-color: #fff;
+        margin-bottom: 2rem;
+        /*text-align: center;*/
+      }
+
+      /*table{
+        width: 200%;
+        background-color: #f5f5f5;
+        margin-left: 2rem;
+        margin-right: 2rem;
+      }*/
+
+      .rightwords{
+        float:right;
+        margin-right:1rem;
+        color:#9d9d9d;
+      }
+
+      .deletedword{
+        float:right;
+        margin-right:1rem;
+        color:#ff0000;
+        border:1px solid #ff0000;
+        border-radius: 5px;
+        padding-left:1rem;
+        padding-right:1rem;
+        font-size: 13px;
+        z-index: 999;
+      }
+
+      .listheight{
+        height:3.5rem;
+      }
+
+      .leftinfo{
+        padding-left:1rem;
+      }
+
+      #titletop{
+        text-align: center;
+        font-size: 16px;
+        margin-top: 0.5rem;
+        color: #1e1e1e;
+        background-color: #fff;
+      }
+
+      .title{
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        text-align: center;
+        font-size: 16px;
+        color: #1e1e1e;
+        background-color: #fff;
+      }
+
+      .titleStage{
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        text-align: center;
+        font-size: 14px;
+        color: #1e1e1e;
+        background-color: #fff;
+      }
+
+      #btn{
+        padding-top: 1rem;
+        background-color: #fff;
+        width: 100%;
+        height: 6rem;
+        padding-bottom: 2rem;
+      }
+
+      #btnleft{
+        float:left;
+        margin-left:4rem;
+        text-align: center;
+        width: 7rem;
+        height: 3rem;
+        line-height: 3rem;
+        background-color: #03aaf4;
+        color: #fff;
+        border-radius: 5px;
+        margin-top:1rem;
+        font-size: 14px;
+      }
+
+      #btnright{
+        float:right;
+        margin-right: 4rem;
+        text-align: center;
+        width: 7rem;
+        height: 3rem;
+        line-height: 3rem;
+        background-color: #03aaf4;
+        color: #fff;
+        border-radius: 5px;
+        margin-top:1rem;
+        font-size: 14px;
+      }
+
+      td{
+        text-align: center;
+      }
+
+      .centerstyle{
+        border:1px solid #9d9d9d;
+        margin-right:2rem;
+        width:90%;
+        margin-top:10%;
+      }
+    </style>
+</head>
+<body>
+<form id="subinfo">
+  <input type="hidden" name="stageid" id="stageid">
+	<input type="hidden" name="userid" id="userid">
+	<input type="hidden" name="status" id="status">
+  <input type="hidden" name="stagestatus" id="stagestatus">
+	<input type="hidden" name="uid" id="uid">
+	<input type="hidden" name="qid" id="qid">
+  <div id="info">
+
+  <div class="aui-content">
+        <div id="titletop">
+            <div class="title">
+            </div>
+        </div>
+        <ul class="aui-list aui-form-list aui-list-noborder" id="infoList">
+            <!-- <li> -->
+            <div class="titleStage">
+            </div>
+
+            <input type="hidden" name="aaa" id="qid" value="">
+
+            <!-- </li> -->
+            <!-- <li class="aui-list-item listheight">
+                <div class="aui-list-item-inner">
+                     <div class="aui-list-item-label aui-font-size-20">
+                       <span class="leftinfo"></span>
+                     </div>
+                     <div class="aui-list-item-input aui-font-size-20">
+                         <input class="formItem aui-font-size-20" type="text" disabled="disabled" style="background:#CCCCCC" value=""/>
+                     </div>
+                </div>
+            </li> -->
+        </ul>
+
+        <div id="btn">
+        </div>
+    </div>
+    </div>
+
+    <div id="savebtn"></div>
+<!-- </form> -->
+</body>
+</html>
+
+<script type="text/javascript" src="../../script/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/common/common.js"></script>
+<script type="text/javascript" src="../../script/common/path.js"></script>
+<script type="text/javascript" src="../../script/aui-toast.js" ></script>
+<script type="text/javascript" src="../../script/bizjs/tablehtml.js"></script>
+
+<script>
+var userinfo = getuserinfo();
+var curDate = getNowFormatDate();
+let usingTemplate = finduidbyqid(localStorage.qid)
+usingTemplate = JSON.parse(usingTemplate)
+apiready = function(){
+  // getList(1);
+  check();
+}
+
+function check(){
+  var status = api.pageParam.status;
+  // alert(status + "====" + localStorage.uType.toString());
+
+  var utype = Number(localStorage.uType)
+  switch (utype) {
+    case 1:
+      if("0" == status.toString()){
+        tablehtml();
+        // getList(1);
+      }
+      if("1" == status.toString()){
+        datum_form();
+      }
+      break;
+    case 2:
+      if("0" == status.toString()){
+        tablehtml();
+        // getList(1);
+      }
+      if("1" == status.toString()){
+         project();
+      }
+
+      if("2" == status.toString()){
+        // alert("in====");
+        image();
+      }
+
+      if("3" == status.toString()){
+        // datum();
+        datum_form();
+      }
+      break;
+    case 3:
+      if(!localStorage.messige || !localStorage.img){
+        if(localStorage.messige){
+          datum_form();
+        }
+        if(localStorage.img){
+          jieshaoimage();
+        }
+      }else{
+        if("0" == status.toString()){
+          jieshaoimage();
+        }
+        if("1" == status.toString()){
+           datum_form();
+        }
+      }
+
+      break;
+    case 4:
+      tablehtml()
+      break
+    case 5:
+      tablehtml()
+      break
+    case 6:
+      tablehtml()
+      break
+    case 7:
+      if("0" == status.toString()){
+        tablehtml();
+      }
+      if("1" == status.toString()){
+         project();
+      }
+
+      if("2" == status.toString()){
+        image();
+      }
+
+      if("3" == status.toString()){
+        datum_form();
+      }
+      break
+
+    default:
+  }
+}
+
+function tablehtml(){
+  // alert( test())
+  // if(true == test()){
+      test();
+  // }
+}
+
+function datum(){
+  $.post(path + "messageFile/findMessageFileByUserId.action",{
+    userid: localStorage.userid
+  },function(data){
+// alert(data + localStorage.userid);
+    if(data){
+      var data = JSON.parse(data);
+
+      var infoList = "";
+
+      infoList += "<div class='aui-content aui-margin-b-15'>";
+      infoList += "<ul class='aui-list aui-media-list'>";
+
+      data.forEach(function(i){
+          infoList += "<li style='height:6rem;line-height:1.8rem;' class='aui-list-item' onclick=see('" + i.oldname+ "','"+ i.oldname+ "')>";//i.webname
+          infoList += "<div class='aui-media-list-item-inner'>";
+          infoList += "<div class='aui-list-item-inner'>";
+          infoList += "<div class='aui-list-item-title name'><span class='words'></span>";
+          infoList += "<span class='words'>";
+
+          if(i.oldname){
+            if(25 < i.oldname.length){
+              infoList += i.oldname.substring(0,25) + "...";
+            }else{
+              infoList += i.oldname;
+            }
+          }
+
+          infoList += "</span>";
+
+          infoList += "</div>";
+          infoList += "<div class='aui-list-item-text value words'><span class='words'>";
+          infoList += "<span style='margin-right:2rem;'>" + i.uploaduser + "</span>";
+
+          infoList += i.uploaddate;
+          infoList += "</span>";
+
+          infoList += "<div class='deletedword' onclick='deleted(" + i.id + ");event.cancelBubble=true;'>删除";
+          infoList += "</div>";
+          infoList += "</div>";
+          infoList += "</div>";
+          infoList += "</li>";
+      })
+
+      infoList += "</ul>";
+      infoList += "</div>";
+
+      if(0 < data.length){
+          $("#info").html(infoList);
+      }else{
+          $("#info").html("<div style='color:#9d9d9d;text-align:center;'>暂无数据</div>");
+      }
+    }
+
+  })
+}
+
+function datum_form(){
+  $.post(path + "messageFile/findMessageFileByUserId_form.action",{
+    id:localStorage.uid
+  },function(data){
+// alert(data + localStorage.userid);
+    if(data){
+      // alert(data);
+      var data = JSON.parse(data);
+
+      var infoList = "";
+
+      infoList += "<div class='aui-content aui-margin-b-15'>";
+      infoList += "<ul class='aui-list aui-media-list'>";
+
+      data.forEach(function(i){
+        if(i.fileName){
+              infoList += "<li style='height:6rem;line-height:1.8rem;' class='aui-list-item' onclick=see('" + i.fileName+ "','" + i.oldName + "')>";//i.webname
+              // localStorage.setItem("filepath",i.filepath);
+              infoList += "<div class='aui-media-list-item-inner'>";
+              infoList += "<div class='aui-list-item-inner'>";
+              infoList += "<div class='aui-list-item-title name'>";
+              infoList += "<span class='words'>";
+              if(i.oldName){
+                if(25 < i.oldName.length){
+                  infoList += i.oldName.substring(0,25) + "...";
+                }else{
+                  infoList += i.oldName;
+                }
+              }
+
+              infoList += "</span>";
+
+              infoList += "</div>";
+              infoList += "<div class='aui-list-item-text value words'><span class='words'>";
+              infoList += "<span style='margin-right:2rem;'>" + i.f_creater + "</span>";
+
+              infoList += i.f_creatime;
+              infoList += "</span>";
+
+              // infoList += "<div class='deletedword' onclick='deleted(" + i.id + ");event.cancelBubble=true;'>删除";
+              // infoList += "</div>";
+              infoList += "</div>";
+              infoList += "</div>";
+              infoList += "</li>";
+          }
+      })
+
+      infoList += "</ul>";
+      infoList += "</div>";
+
+      if(0 < data.length){
+        if(!data[0].fileName){
+          $("#info").html("<div style='color:#9d9d9d;text-align:center;'>暂无数据</div>");
+        }else{
+          $("#info").html(infoList);
+        }
+      }else{
+          $("#info").html("<div style='color:#9d9d9d;text-align:center;'>暂无数据</div>");
+      }
+
+
+    }
+  })
+}
+
+
+function detail(qid,uid,utype){
+  // alert(qid + "===" + uid + "===" + utype);
+  localStorage.setItem("qid",qid);
+  localStorage.setItem("uid",uid);
+  localStorage.setItem("uType",utype);
+  api.openWin({
+      name: 'showtask',
+      url: 'html/task/showtask.html',
+      pageParam: {
+          name: 'test'
+      }
+  });
+}
+
+function deleted(qid){
+  var msg = "您真的确定要删除吗？\n\n请确认！";
+  if (confirm(msg)==true){
+     $.post(path + "qrcode/deletedByUserIdAndQId.action",{
+       qid: qid,
+       userid: localStorage.userid
+     },function(data){
+      //  alert(data);
+       if(data){
+          window.location.reload();
+       }
+     })
+      return true;
+    }else{
+    return false;
+  }
+}
+
+function project(){
+  // $.post(path + "usingTemplate/findContent.action",{
+  // alert(localStorage.uid)
+  $.post(path + "usingTemplate/findContent_form.action",{
+      id: localStorage.uid
+  },function(data){
+    // alert(localStorage.uid + "===" +  data);
+    if(data){
+      // alert(data);
+        var data = JSON.parse(data);
+          console.log(data);
+          if(data.content){
+            $("#info").html(data.content);
+          }else{
+            $("#info").html("<div style='color:#9d9d9d;text-align:center;'>暂无数据</div>");
+          }
+    }
+  })
+}
+
+var imgarr = [];
+
+function image(){
+  // $.post(path + "usingTemplate/findImgPathByUId.action",{
+    // alert(localStorage.uid + "==" + localStorage.qid);
+  $.post(path + "usingTemplate/findImgPathByUId_form.action",{
+      id: localStorage.uid
+  },function(data){
+    if(data){
+      // alert(data);
+      var data = JSON.parse(data);
+      console.log(data);
+      var info = "";
+
+      var flag = 0;
+      data.forEach(function(i){
+        info += "<div class='imgblock'>";
+        info += "<img onclick=openPhoto(" + flag + ") class='imgcss' src='" + i.imgpath + "'/>";
+        info += "<div class='img-item' style='background-image:url(" + i.imgpath + ")'";
+        info += " tapmode onclick=openPhoto(" + flag + ")></div>";
+        info += "</div>";
+        flag ++;
+        imgarr.push(i.imgpath);
+      })
+      if(0 < data.length){
+        $("#info").html(info);
+      }else{
+        $("#info").html("<div style='color:#9d9d9d;text-align:center;'>暂无数据</div>");
+      }
+    }
+  })
+}
+
+function jieshaoimage(){
+  // $.post(path + "usingTemplate/findImgPathByUId.action",{
+  // alert(localStorage.uid + "==" + localStorage.qid);
+  $.post(path + "usingTemplate/findImgPathByUId_form.action",{
+      id: localStorage.uid
+  },function(data){
+    // alert(data);
+    if(data){
+      var data = JSON.parse(data);
+      console.log(data);
+      var info = "";
+      var flag = 0;
+      info += "<div style='margin-top:1rem;'>";
+      data.forEach(function(i){
+        info += "<div style='wdith:98%;margin-left:1%;'>";
+        info += "<img style='width:100%;' onclick=openPhoto(" + flag + ") src='" + i.imgpath + "'/>";
+        info += "<div class='img-item' style='background-image:url(" + i.imgpath + ")'";
+        info += " tapmode onclick=openPhoto(" + flag + ")></div>";
+        info += "</div>";
+        flag ++;
+        imgarr.push(i.imgpath);
+      })
+      info += "</div>";
+    // alert(data.length);
+      if(0 < data.length){
+        $("#info").html(info);
+      }else{
+        $("#info").html("<div style='color:#9d9d9d;text-align:center;'>暂无数据</div>");
+      }
+    }
+  })
+}
+
+function openPhoto(index){
+		var photoBrowser = api.require('photoBrowser');
+		photoBrowser.open({
+		    images: imgarr,
+		    activeIndex: index,
+		    bgColor: '#000'
+		}, function(ret){
+		    //alert(JSON.stringify(ret));
+		    if(ret){
+		    	if(ret.eventType=="click"){
+		    		photoBrowser.close();
+		    	}
+		    }
+		});
+	}
+
+function getList(num){
+
+  $.post(path + "usingTemplate/findUsingTemplateDetailById.action",{
+    id: localStorage.qid
+
+  },function(data){
+// alert(data + localStorage.userid);
+    if(data){
+      var data = JSON.parse(data);
+      console.log(data);
+      // var data = JSON.parse(data.toString());
+
+      var infoList = "";
+      localStorage.setItem("datalength",data.infoList.length);
+      var d_length = data.infoList.length - 1;
+      // alert(data.infoList[d_length].info.stageQrValue.status);
+      if(2 == data.infoList[d_length].info.stageQrValue.status){
+        $("#stagestatus").val(data.qrCode.status);
+        num = -1;
+      }
+
+      if(data.infoList.length <= 0){
+          $("#miaoshu").html("暂无数据");
+      }
+
+      $(".title").html(data.qrCode.name);
+
+      data.infoList.forEach(function(i){
+        // infoList += "<input id='status' name='status' hidden='true' value='" + i.info.stageQrValue.status+ "'/>";
+        if(i.stage.sort == num || -1 == num){
+          localStorage.setItem("stage",num);
+          $("#stageid").val(i.stage.id);
+          $("#userid").val(localStorage.userid);
+          $("#qid").val(localStorage.qid);
+          $("#uid").val(localStorage.uid);
+          $("#status").val(i.info.stageQrValue.status);
+
+
+          flag = num;
+          var statusname = "";
+          switch (i.info.stageQrValue.status) {
+            case 1: statusname = "<span >已提交</span>";
+              break;
+            case 2: statusname = "<span style='color:green;'>已检查</span>";
+              break;
+            case 3: statusname = "";
+              break;
+            default: statusname = "未提交";
+
+          }
+
+          infoList += "<div class='titleStage'>";
+          infoList += i.stage.stageName + "(" + statusname + ")";
+          infoList += "</div>";
+          i.info.ufname.forEach(function(j){
+            infoList += "<li class='aui-list-item listheight'>";
+            infoList += "<div class='aui-list-item-inner'>";
+            infoList += "<div class='aui-list-item-label aui-font-size-20'>";
+            infoList += "<span class='leftinfo'>";
+            infoList += j.name;
+            infoList += "</span>";
+            infoList += "</div>";
+            infoList += "<div class='aui-list-item-input aui-font-size-20'>";
+
+            switch (j.type) {
+              case "input":
+                infoList += "<input class='formItem aui-font-size-20' name='" + j.usingTemplateField.id + "' type='text' value='";
+                infoList += j.usingTemplateField.qr_ufvalue;
+                infoList += "'";
+                if("姓名" == j.name || "日期" == j.name){
+                  infoList += " readonly='true'";
+                }
+                infoList += "/>";
+                break;
+              case "select":
+                infoList += "<select class='formItem aui-font-size-20' name='" + j.usingTemplateField.id + "'>";
+                j.value.forEach(function(l){
+                  infoList += "<option value='" + l + "'>";
+                  infoList += l;
+                  infoList += "</option>";
+                })
+                infoList += "</select>";
+                break;
+              case "textarea":
+                infoList += "<textarea class='formItem aui-font-size-20' type='text' name='" + j.usingTemplateField.id + "' value='";
+                infoList += j.usingTemplateField.qr_ufvalue;
+                infoList += "'>";
+                infoList += "</textarea>";
+                break;
+              default:
+
+            }
+
+            infoList += "</div>";
+            infoList += "</div>";
+            infoList += "</li>";
+          })
+
+          if(i.info.stageQrValue && i.info.stageQrValue.overUserName){
+            infoList += "<li class='aui-list-item listheight' style='background:#fff'>";
+            infoList += "<div class='aui-list-item-inner'>";
+            infoList += "<div class='aui-list-item-label aui-font-size-20'>";
+            infoList += "<span class='leftinfo'>";
+            infoList += "检查人";
+            infoList += "</span>"
+            infoList += "</div>";
+            infoList += "<div class='aui-list-item-input aui-font-size-20'>";
+            infoList += "<input class='formItem aui-font-size-20' type='text'";
+            infoList += " disabled='disabled'  value='";
+            infoList += i.info.stageQrValue.overUserName;
+            infoList += "'/>";
+            infoList += "</div>";
+            infoList += "</div>";
+            infoList += "</li>";
+          }
+
+          if(i.info.stageQrValue && i.info.stageQrValue.checkDate){
+            infoList += "<li class='aui-list-item listheight' style='background:#fff'>";
+            infoList += "<div class='aui-list-item-inner'>";
+            infoList += "<div class='aui-list-item-label aui-font-size-20'>";
+            infoList += "<span class='leftinfo'>";
+            infoList += "检查时间";
+            infoList += "</span>";
+            infoList += "</div>";
+            infoList += "<div class='aui-list-item-input aui-font-size-20'>";
+            infoList += "<input class='formItem aui-font-size-20' type='text'";
+            infoList += " disabled='disabled' value='";
+            infoList += i.info.stageQrValue.checkDate;
+            infoList += "'/>";
+            infoList += "</div>";
+            infoList += "</div>";
+            infoList += "</li>";
+          }
+
+          if(-1 != num){
+            if(1 == i.stage.sort){
+              infoList += "<div id='btnleft' style='background-color:#9d9d9d;'>";
+            }else{
+              infoList += "<div id='btnleft' onclick='before(" + i.stage.sort + ")'>";
+            }
+            infoList += "上一阶段";
+            infoList += "</div>";
+
+            if(i.stage.sort == data.infoList.length){
+              infoList += "<div id='btnright' style='background-color: #9d9d9d;'>";
+            }else{
+              infoList += "<div id='btnright' onclick=after('" + i.stage.sort  + "','" + i.info.stageQrValue.status + "')>";
+            }
+            infoList += "下一阶段";
+            infoList += "</div>";
+          }
+        }
+      })
+
+      $("#infoList").html(infoList);
+
+      var setstatus = "setStatus('" + $("#subinfo").serialize() + "','" + $("#status").val()+ "','" + $("#stagestatus").val() + "')";
+      api.execScript({
+        name: 'showtask', //winName
+        script: setstatus
+      });
+    }
+
+  })
+}
+
+function detail(qid,uid,utype){
+  // alert(qid + "===" + uid + "===" + utype);
+  localStorage.setItem("qid",qid);
+  localStorage.setItem("uid",uid);
+  localStorage.setItem("uType",utype);
+  api.openWin({
+      name: 'showtask',
+      url: 'html/task/showtask.html',
+      pageParam: {
+          name: 'test'
+      }
+  });
+}
+
+function deleted(qid){
+  var msg = "您真的确定要删除吗？\n\n请确认！";
+  if (confirm(msg)==true){
+     $.post(path + "qrcode/deletedByUserIdAndQId.action",{
+       qid: qid,
+       userid: localStorage.userid
+     },function(data){
+      //  alert(data);
+       if(data){
+          window.location.reload();
+       }
+     })
+      return true;
+    }else{
+    return false;
+  }
+}
+
+function before(num){
+    num --;
+    localStorage.setItem("stage",num);
+    getList(num);
+}
+
+function after(num,status){
+  if(2 != status){
+    api.alert({
+        msg: "请检查"
+    });
+    return;
+  }
+  num ++;
+  localStorage.setItem("stage",num);
+  getList(num);
+}
+
+function tijiao(status){
+  $("#status").val(status);
+  save();
+}
+
+function wancheng(status){
+  $.post(path + "usingTemplate/updateUsingTemplateStatus.action",{
+    qid: localStorage.qid,
+    status: status
+  },function(data){
+    getList(-1);
+  })
+
+}
+
+function save(){
+  var result = false;
+  $.ajax({
+		type  : "POST",
+		url   : path + "usingTemplate/updateUsingTemplate.action",
+		data  : $("#subinfo").serialize(),
+		async : false,
+		error : function(request){
+		},
+		success : function(data){
+      if(data){
+          result = true;
+          api.alert({
+              msg: "请检查"
+          });
+          // window.location.reload();
+          if(3 == $("#status").val() || localStorage.datalength == localStorage.stage){
+            getList(-1);
+          }else{
+            getList(localStorage.stage);
+          }
+      }
+		}
+	});
+  return result;
+}
+
+function saveTableHtml(){
+  $("select").css({
+    "display":"none"
+  })
+
+  var tdcss = $("td").find("select");
+  $(tdcss).css({
+    "margin-left":"0px"
+  });
+  var f = 0;
+  if(4 == localStorage.uType){
+    $("table").eq(0).attr("userid",localStorage.userid);
+    let username = "";
+    if(userinfo.userName){
+      username = userinfo.userName;
+    }
+
+    if(!$("#imgarrow").attr("src")){
+      if($("#arrow").val()){
+        $("#arrowdiv").html("<img id='imgarrow' style='width:1.5rem;height:1.5rem' src='" + $("#arrow").val() + "'/>")
+      }else{
+        api.confirm({
+            title: '提示',
+            msg: '请选择箭头方向',
+            buttons: ['确定', '取消']
+        }, function(ret, err){
+        });
+        return
+      }
+
+    }
+
+     $("input[class='words']").each(function(){
+         if(!$(this).val()){
+           f ++
+           api.confirm({
+               title: '提示',
+               msg: '请填写' + $(this).parent("td").prev().html(),
+               buttons: ['确定', '取消']
+           }, function(ret, err){
+
+           });
+           return
+         }else{
+           $(this).parent("td").css({
+             "text-align":"left",
+             "padding-left":"3rem"
+           })
+           $(this).parent("td").html("<input type='text' class='words' style='font-size:1.3rem;' value='" + $(this).val() + "'>")
+         }
+     })
+  }else if(5 == localStorage.uType){
+    $("table").eq(0).attr("userid",localStorage.userid);
+    f = 0
+    $("input[class='words']").each(function(){
+      if(!$(this).attr("hidden")){
+        if(!$(this).val()){
+          f ++
+          api.confirm({
+              title: '提示',
+              msg: '请填写位置',
+              buttons: ['确定', '取消']
+          }, function(ret, err){
+
+          });
+
+          return
+        }else{
+          // alert($(this).val())
+          $(this).parent("td").html("<input type='text' class='words' style='font-size:1.3rem;' value='" + $(this).val() + "'>")
+        }
+      }else{
+        $(this).parent("td").html("<input type='text'class='words' hidden='hidden' style='font-size:1.3rem;' value=''>")
+      }
+    })
+  }else if(6 == localStorage.uType){
+    $("table").eq(0).attr("userid",localStorage.userid);
+    f = 0
+    $("input[class='words']").each(function(){
+      if(!$(this).attr("hidden")){
+        if(!$(this).val()){
+          f ++
+          api.confirm({
+              title: '提示',
+              msg: '请填写' + $(this).parent("td").prev("td").html(),
+              buttons: ['确定', '取消']
+          }, function(ret, err){
+
+          });
+        }else{
+          $(this).parent("td").css({
+            "text-align":"left",
+            "padding-left":"3rem"
+          })
+          $(this).parent("td").html("<input type='text' class='words' style='font-size:1.3rem;' value='" + $(this).val() + "'>")
+        }
+      }else{
+        $(this).parent("td").html("<input type='text' class='words' hidden='hidden' style='font-size:1.3rem;' value=''>")
+      }
+    })
+  }else{
+    $("table").eq(0).attr("userid",localStorage.userid);
+    let username = "";
+    if(userinfo.userName){
+      username = userinfo.userName;
+    }
+  }
+
+  if(0 != f){
+    return
+  }
+
+  api.confirm({
+      title: '提示',
+      msg: '确认保存吗？',
+      buttons: ['确定', '取消']
+  }, function(ret, err){
+    // $("center").removeClass("centerstyle");
+    $("center").css("border","0px")
+    // alert($("#info").html())
+
+      if( 1 == ret.buttonIndex ){
+        // alert(localStorage.qid + "===" +  $("#info").html());
+        $.post(path + "usingTemplate/saveOrUpdateTableHtml.action",{
+          qid: localStorage.qid,
+          content: $("#info").html()
+        },function(data){
+          if(data){
+            var data = JSON.parse(data);
+            if(data.success){
+              api.alert({
+                  msg: data.msg,
+              });
+
+              if(6 != localStorage.uType){
+                updatelaststatus();
+              }
+              tablehtml();
+            }
+          }
+        })
+      }
+  });
+}
+
+function updatelaststatus(){
+  var binfo = 0;
+  var binfo_ = 0;
+  var flag = 0;
+  for(var i=0;i<$("td[b=1]").length;i++){
+    var info = $("td[b=1]").eq(i).html();
+    // alert(info);
+    binfo ++;
+    if(true == checkNameOrDate(info) || false == checksub(info)){
+      flag ++;
+    }
+  }
+
+  for(var i=0;i<$("td[b=-1]").length;i++){
+    var info = $("td[b=-1]").eq(i).html();
+    // alert(info);
+    binfo_ ++;
+    if(true == checkNameOrDate(info) || false == checksub(info)){
+      flag ++;
+    }
+  }
+
+  var len =Number(binfo)  + Number(binfo_) ;
+
+  // alert(len + "===" + Number(binfo) + "=====" + Number(binfo_) +"====" + flag);
+
+  if(len == flag){
+    $.post(path + "usingTemplate/updateUsingTemplateStatus_form.action",{
+      qid: localStorage.qid
+    },function(data){
+      // alert(data);
+    })
+  }
+}
+
+function see(url,name){
+  api.actionSheet({
+		    title: name,
+		    cancelTitle: '取消',
+		    buttons: ['下载文件', '打开文件']
+		}, function(ret, err) {
+      if(ret.buttonIndex==1){
+        api.confirm({
+            title: '提示',
+            msg: '确定要下载吗？',
+            buttons: ['确定', '取消']
+        }, function(ret, err){
+            if( ret.buttonIndex == 1 ){
+                 downloadFile('1',url,name);
+            }
+        });
+      }else if(ret.buttonIndex==2){
+        downloadFile('2',url,name);
+      }
+		});
+}
+
+function downloadFile(type,url,name){
+		api.download({
+		    url: url,
+		    savePath: 'fs://idtong/'+name,
+		    report: false,
+		    cache: true,
+		    allowResume: true
+		}, function(ret, err) {
+			console.log('downloadFile:'+JSON.stringify(ret));
+		    if (ret.state == 1) {
+		    	if(type=='1'){
+		    		api.alert({
+		    			msg:'文件下载成功，保存路径：'+ret.savePath
+                    });
+		    	}else{
+		        	openFile(ret.savePath);
+		        }
+		        api.hideProgress();
+		    } else if (ret.state == 2){
+		    	alert('文件下载失败');
+				api.hideProgress();
+		    }
+		});
+	}
+
+	function openFile(path){
+	console.log(path);
+		var docReader = api.require('docReader');
+		docReader.open({
+		    path: path,
+		    autorotation: false
+		}, function(ret, err) {
+			console.log('openFile:'+JSON.stringify(ret));
+		    if (ret.status) {
+
+		    } else {
+		    console.log('openFileerr:'+JSON.stringify(err));
+		        alert('打开文件失败');
+		    }
+		});
+	}
+
+</script>

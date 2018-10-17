@@ -1,0 +1,317 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>任务导航</title>
+    <link rel="stylesheet" type="text/css" href="css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="css/common/common.css"/>
+    <!-- <link rel="stylesheet" type="text/css" href="css/bizcss/taskmain.css"/> -->
+    <style>
+      #miaoshu{
+        text-align:center;
+        padding-top:5px;
+        paddingbottom:5px;
+        color: #9d9d9d;
+        font-size:1rem;
+      }
+
+      .rightwords{
+        float:right;
+        margin-right:1rem;
+        color:#9d9d9d;
+      }
+
+      .deletedword{
+        float:right;
+        margin-right:1rem;
+        color:#ff0000;
+        border:1px solid #ff0000;
+        border-radius: 5px;
+        padding-left:1rem;
+        padding-right:1rem;
+        font-size: 13px;
+        z-index: 999;
+      }
+    </style>
+</head>
+<body>
+
+  <header id="header">
+    <div id="headerdiv">
+      <h1 >任&nbsp;&nbsp;&nbsp;&nbsp;务</h1>
+      <div class='right' tapmode onclick='scanning()'></div>
+    </div>
+  </header>
+  <nav id="nav">
+    <div class="menu selected" tapmode onclick="setNavMenusIndex(0)">
+      进行中
+    </div>
+    <div class="menu" tapmode onclick="setNavMenusIndex(1)">
+      已完成
+    </div>
+  </nav>
+
+  <div id="wrap" class="flex-wrap flex-vertical">
+      <div id="main" class="flex-con words">
+          <div class="aui-content aui-margin-b-15">
+              <ul class="aui-list aui-media-list" id="infoList">
+
+              </ul>
+          </div>
+      </div>
+      <footer id="footer" class="border-t">
+          <ul class="flex-wrap" >
+              <li tapmode onclick="randomSwitchBtn( this,'index.html' );" class="flex-con" >首页</li>
+              <li tapmode onclick="randomSwitchBtn( this,'' );" class="flex-con active" >任务</li>
+              <li tapmode onclick="randomSwitchBtn( this,'datum.html' );" class="flex-con" >资料</li>
+              <li tapmode onclick="randomSwitchBtn( this,'set.html' );" class="flex-con" >设置</li>
+          </ul>
+      </footer>
+  </div>
+</body>
+</html>
+<script type="text/javascript" src="script/api.js"></script>
+<script type="text/javascript" src="script/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="script/common/path.js"></script>
+<script type="text/javascript" src="script/common/common.js"></script>
+<script>
+
+apiready= function(){
+  islogin();
+  issignout();
+  openFrameGroupinfo();
+  api.parseTapmode();
+}
+
+function openFrameGroupinfo(){
+  var headerH = $api.byId('header');
+  // $api.fixStatusBar(header);
+  var navH = $api.byId('nav');
+  headerH = $api.offset(header).h;
+  navH = $api.offset(nav).h;
+  var footerH = $api.byId('footer');
+  footerH = $api.offset(footer).h;
+  menus = $api.domAll(nav, ".menu");
+  var frames = [];
+  for(var i=0; i<menus.length; i++){
+    frames.push(
+      {
+        name: "taskmain_frame_" + i,
+        url: "html/task/taskmain_frame.html",
+        pageParam:{
+          status: i
+        }
+      }
+    );
+  }
+
+  api.openFrameGroup ({
+      name: 'task',
+      scrollEnabled: true,
+      preload: 1,
+      rect: {
+           x: 0,
+           y: headerH + navH,
+           w: 'auto',
+           h: api.winHeight - footerH - headerH - navH
+      },
+      index: 0,
+      frames: frames
+  }, function(ret, err){
+      fnSetNavMenusSelect(ret.index);
+  });
+
+  changeNavCls();
+}
+
+function changeNavCls(){
+  if(localStorage.qrcodestatus && 3 == localStorage.qrcodestatus){
+    $api.removeCls(menus[0], 'selected');
+    $api.addCls(menus[1], 'selected');
+  }
+}
+
+var menus;
+function fnSetNavMenusSelect(index_){
+  localStorage.setItem("qrcodestatus","");
+  // refash();
+  // alert(index_ + "==" + menus.length);
+  for(var i=0;i<menus.length;i++){
+// alert(i + "==" + index_);
+    if(i === index_){
+      // alert("same");
+      $api.addCls(menus[i], 'selected');
+    }else{
+      // alert("no");
+      $api.removeCls(menus[i], 'selected');
+    }
+  }
+}
+
+//刷新任务frame1
+function GoToRefreshTask(){
+    var jsfun = "ref();";
+    api.execScript({
+        name: 'root',
+        frameName: 'taskmain_frame_0',
+        script: jsfun
+    });
+}
+
+//刷新任务frame2
+function GoToRefreshTask1(){
+    var jsfun = "ref();";
+    api.execScript({
+        name: 'root',
+        frameName: 'taskmain_frame_1',
+        script: jsfun
+    });
+}
+
+function refash(){
+    GoToRefreshTask1();
+    GoToRefreshTask();
+}
+
+function setNavMenusIndex(index_){
+  localStorage.setItem("qrcodestatus","");
+
+  if(0 == index_){
+    $api.addCls(menus[0], 'selected');
+    $api.removeCls(menus[1], 'selected');
+  }
+
+  if(1 == index_){
+    $api.addCls(menus[1], 'selected');
+    $api.removeCls(menus[0], 'selected');
+  }
+
+  api.setFrameGroupIndex({
+      name: 'task',
+      index: index_,
+      scroll: true,
+      reload: true
+  });
+}
+
+function scanning(){
+  var FNScanner = api.require('FNScanner');
+
+  FNScanner.openScanner({
+      autorotation: true,
+      saveImg: {
+        path: 'fs://qrCode.jpg',  //字符串类型；保存的文件路径；若路径不存在，则创建此路径，只支持fs://协议
+        w: 200,              //（可选项）数字类型；生成图片的宽度，默认：200
+        h: 200
+      }
+    //  saveToAlbum: true
+  }, function(ret, err) {
+      if (ret) {
+          // var ret = JSON.stringify(ret);
+          // alert(ret.eventType);
+
+          if("cancel" == ret.eventType){
+              FNScanner.closeView();
+              // api.closeWin();
+              // window.location.href="../../task.html";
+          }else{
+            // alert(ret.content);
+            if(ret.content){
+              var str = getCaption(ret.content,"?");
+              var num = null;
+              if(str && str!=ret.content){
+                var uType = getCaption(ret.content,"\=");
+                var qid = ret.content.match(/=(\S*)&/)[1];
+                // alert(uType + "====" + qid + "===" + localStorage.userid);
+
+                localStorage.setItem("qid",qid);
+                localStorage.setItem("uType",uType);
+                var uidinfo = finduidbyqid(qid);
+                // alert(uidinfo);
+                uidinfo = JSON.parse(uidinfo);
+                localStorage.setItem("uid",uidinfo.info.qUid);
+                localStorage.setItem("qrcodestatus",uidinfo.info.status);
+                // localStorage.setItem("qname",uidinfo.info.name);
+
+                if(3 == Number(uType)){
+                  var messige = findmessige();
+                  localStorage.setItem("messige",messige)
+
+                  var img = findimg()
+                  localStorage.setItem("img",img)
+                }
+
+                num = Number(qid);
+
+                if(toshowtask(localStorage.userid, num)){
+                  localStorage.setItem("index","");
+                  localStorage.setItem("task","task");
+                  api.openWin({
+                      name: 'showtask',
+                      url: 'html/task/showtask.html',
+                      reload: true,
+                      scaleEnabled:true
+                  });
+
+                  // window.location.href=ret.content;
+                }
+              }else{
+                alert("无效的二维码！");
+                window.location.reload();
+              }
+
+            }
+          }
+      }
+  });
+}
+
+function toshowtask(userid,qid){
+	var result = false;
+	$.ajax({
+		type  : "POST",
+		url   : path + "qrcode/isSeeUsingTemplate_form.action",
+		data  : {
+      "userid": userid,
+      "qid": qid
+    },
+		async : false,
+		error : function(request){
+		},
+		success : function(data){
+      // alert("data====" + data);
+			// var data = JSON.parse(data);
+      if(data){
+        result = true;
+      }
+		}
+	});
+	return result;
+}
+
+
+// 随意切换按钮
+function randomSwitchBtn( tag,mineUrl ) {
+  localStorage.setItem("qrcodestatus","");
+
+  if(mineUrl){
+    api.closeFrameGroup({
+        name: 'task'
+    });
+
+      api.openWin({
+        name : "root",
+        url : mineUrl,
+        animation:{
+            type:"movein",                //动画类型（详见动画类型常量）
+            subType:"from_right",       //动画子类型（详见动画子类型常量）
+            duration:300                //动画过渡时间，默认300毫秒
+        }
+      });
+  }
+ }
+
+</script>

@@ -1,0 +1,206 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>设置</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/common/common.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/bizcss/set.css"/>
+    <style>
+      li{
+        height: 3.5rem;
+        line-height: 2.5rem;
+        font-size: 14px;
+      }
+    </style>
+</head>
+<body>
+        <div id="header">
+            <div id="htop">
+                <img id="avatar" src="../../image/defaultimg.png"/ onclick="selectPic()">
+            </div>
+            <div id="hdown"></div>
+        </div>
+
+        <div class="aui-content aui-margin-b-15">
+            <ul class="aui-list aui-media-list">
+              <li class="aui-list-item aui-list-item-middle" onclick="personinfo()">
+                  <div class="aui-media-list-item-inner">
+                      <div class="aui-list-item-media" style="width: 2rem;">
+                          <img class="iconimg" src="../../image/set/personinfo.png"/>
+                      </div>
+                      <div class="aui-list-item-inner aui-list-item-arrow">
+                          个人信息
+                      </div>
+                  </div>
+              </li>
+              <li class="aui-list-item aui-list-item-middle" onclick="modifypassword()">
+                  <div class="aui-media-list-item-inner">
+                      <div class="aui-list-item-media" style="width: 2rem;">
+                          <img class="iconimg" src="../../image/set/modifypassword.png"/>
+                      </div>
+                      <div class="aui-list-item-inner aui-list-item-arrow">
+                          修改密码
+                      </div>
+                  </div>
+              </li>
+              <li class="aui-list-item aui-list-item-middle" onclick="versioninfo()">
+                  <div class="aui-media-list-item-inner">
+                      <div class="aui-list-item-media" style="width: 2rem;">
+                          <img class="iconimg" src="../../image/set/version.png"/>
+                      </div>
+                      <div class="aui-list-item-inner aui-list-item-arrow">
+                          关&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp于
+                      </div>
+                  </div>
+              </li>
+            </ul>
+        </div>
+
+        <div class="aui-content aui-margin-b-15" style="margin-top:1rem;">
+            <ul class="aui-list aui-media-list">
+              <li class="aui-list-item aui-list-item-middle" onclick="tologin()">
+                  <div class="aui-media-list-item-inner">
+                      <div class="aui-list-item-media" style="width: 2rem;">
+                          <img class="iconimg" src="../../image/set/tuichu.png"/>
+                      </div>
+                      <div class="aui-list-item-inner aui-list-item-arrow">
+                          退出登录
+                      </div>
+                  </div>
+              </li>
+            </ul>
+        </div>
+</body>
+</html>
+
+<script type="text/javascript" src="../../script/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="../../script/common/common.js"></script>
+<script type="text/javascript" src="../../script/common/path.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script>
+apiready = function(){
+  var userinfo = getuserinfo();
+  if(userinfo.userName){
+    $("#hdown").html(userinfo.userName);
+  }else{
+    if(userinfo.loginName){
+      $("#hdown").html(userinfo.loginName);
+    }
+  }
+  if(userinfo.photo){
+    $("#avatar").attr("src",path + "photo/" + userinfo.photo);
+  }
+  api.parseTapmode();
+}
+
+function personinfo(){
+  api.openWin({
+      name: 'personinfo',
+      url: 'personinfo.html',
+      pageParam: {
+          name: 'test'
+      }
+  });
+}
+
+function modifypassword(){
+  api.openWin({
+      name: 'modifypassword',
+      url: 'modifypassword.html',
+      pageParam: {
+          name: 'test'
+      }
+  });
+}
+
+function tologin(){
+  api.confirm({
+		    msg: '确认要退出登录吗？',
+		    buttons: ['确定', '取消']
+		}, function(ret, err) {
+		    if(ret.buttonIndex==1){
+          localStorage.setItem("userid","");
+          api.closeFrame({
+              name: 'myInfo'
+          });
+          window.location.href = "../../login.html";
+        }
+		});
+}
+
+function selectPic(){
+		api.actionSheet({
+		    cancelTitle: '取消',
+		    buttons: ['拍照', '相册']
+		}, function(ret, err) {
+		    if(ret.buttonIndex==1)
+		    	getPic('camera');
+		    else if(ret.buttonIndex==2)
+		    	getPic('album');
+		});
+	}
+
+	function getPic(sourceType){
+		api.getPicture({
+		    sourceType: sourceType,
+		    encodingType: 'jpg',
+		    mediaValue: 'pic',
+		    destinationType: 'url',
+		    allowEdit: true,
+		    quality: 90,
+		    saveToPhotoAlbum: false
+		}, function(ret, err) {
+		    if (ret) {
+          if(ret.data){
+            $('#avatar').attr('src',ret.data);
+            savephoto();
+          }
+		    }
+		});
+	}
+
+  function savephoto(){
+    api.ajax({
+			url : path + 'userinfo/savephoto.action',
+			method : 'POST',
+			data : {
+				values : {
+					id:localStorage.userid
+				},
+				files: {
+		            file: $('#avatar').attr('src')
+		        }
+			}
+		}, function(ret, err) {
+			api.hideProgress();
+			if (ret) {
+				console.log('savephoto:'+JSON.stringify(ret));
+				if(ret.success){
+          api.alert({msg:"头像上传成功！"});
+				}else{
+					api.alert({msg:ret.msg
+                    });
+				}
+
+			}else{
+				console.log('savephotoerr:'+JSON.stringify(err));
+				api.alert({
+					msg : '保存失败'
+				});
+			}
+		});
+  }
+
+  function versioninfo(){
+    api.openWin({
+        name: 'versioninfo',
+        url: 'versioninfo.html'
+    });
+
+  }
+
+</script>

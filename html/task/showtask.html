@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <!-- <meta http-equiv="X-UA-Compatible" content="IE=Edge" /> -->
+    <!-- 双击时禁止页面放大缩小 -->
+    <!-- <meta name="viewport" content="user-scalable=0" />  -->
+    <!-- <meta name="format-detection" content="telephone=no,email=no,date=no,address=no"> -->
+    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+    <title>任务详情</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/common/common.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/bizcss/showtask.css"/>
+    <style>
+          #footer{
+            height: 3.5rem;
+            line-height: 3.5rem;
+            background-color: #03aaf4;
+          }
+
+          #savebtn{
+            text-align: center;
+            height: 3.5rem;
+            line-height: 3.5rem;
+            background-color: #03aaf4;
+            color: #fff;
+            font-size: 16px;
+          }
+
+          #footerbtn{
+            background-color: #03aaf4;
+            text-align: center;
+            color: #fff;
+            height: 3.5rem;
+            line-height: 3.5rem;
+            font-size: 18px;
+          }
+
+          #overbtn{
+            background-color: #03aaf4;
+            text-align: center;
+            color: #fff;
+            height: 3.5rem;
+            line-height: 3.5rem;
+            font-size: 18px;
+          }
+
+          #tijiaobtn{
+            float: left;
+            background-color: #03aaf4;
+            text-align: center;
+            color: #fff;
+            width: 50%;
+            height: 3.5rem;
+            line-height: 3.5rem;
+            font-size: 18px;
+          }
+
+          #jianchabtn{
+            float:right;
+            background-color: #009787;
+            text-align: center;
+            color: #fff;
+            width: 50%;
+            height: 3.5rem;
+            line-height: 3.5rem;
+            font-size: 18px;
+          }
+
+          #btn{
+            padding: 3px 20px 1px;
+            margin-top: 50px;
+            position: fixed;
+
+          }
+    </style>
+</head>
+<body>
+  <header id="header">
+    <h1>任务详情</h1>
+    <div class='left' tapmode onclick='closeWin()'></div>
+  </header>
+  <nav id="nav"></nav>
+  <div id="wrap" class="flex-wrap flex-vertical">
+    <input id="status" hidden="true" value=""/>
+    <input id="allinfo" hidden="true" value=""/>
+      <div id="main" class="flex-con words" style="overflow:hidden;">
+        <div class="tipon">
+          正在更新数据，请稍后。。。
+        </div>
+        <div class="helpmask"></div>
+      </div>
+      <!-- <footer id="footer" class="border-t">
+        <div id="savebtn" onclick="saveTableHtml()">保存</div>
+      </footer> -->
+  </div>
+</body>
+</html>
+
+<script type="text/javascript" src="../../script/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/common/common.js"></script>
+<script type="text/javascript" src="../../script/common/path.js"></script>
+<script type="text/javascript" src="../../script/bizjs/showtask.js"></script>

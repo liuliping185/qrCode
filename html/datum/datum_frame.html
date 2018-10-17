@@ -1,0 +1,239 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>资料列表</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/common/common.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/bizcss/index.css"/>
+    <style>
+      #miaoshu{
+        text-align:center;
+        padding-top:5px;
+        paddingbottom:5px;
+        color: #9d9d9d;
+        font-size:1rem;
+      }
+
+      .rightwords{
+        float:right;
+        margin-right:1rem;
+        color:#9d9d9d;
+      }
+
+      .deletedword{
+        float:right;
+        margin-right:1rem;
+        color:#ff0000;
+        border:1px solid #ff0000;
+        border-radius: 5px;
+        padding-left:1rem;
+        padding-right:1rem;
+        font-size: 13px;
+        z-index: 999;
+      }
+    </style>
+</head>
+<body>
+<div class="aui-content aui-margin-b-15">
+  <ul class="aui-list aui-media-list" id="infoList">
+      <!-- <li class="aui-list-item">
+          <div class="aui-media-list-item-inner">
+              <div class="aui-list-item-inner">
+                  <div class="aui-list-item-text">
+                      <div class="aui-list-item-title">带有媒体的列表二</div>
+                      <div class="aui-list-item-right">08:00</div>
+                  </div>
+                  <div class="aui-list-item-text">
+                      在下方我们加入了aui-info信息条
+                  </div>
+              </div>
+          </div>
+      </li> -->
+  </ul>
+</div>
+
+<div id="miaoshu"></div>
+
+</body>
+</html>
+
+<script type="text/javascript" src="../../script/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="../../script/aui-dialog.js" ></script>
+<script type="text/javascript" src="../../script/aui-toast.js" ></script>
+<script type="text/javascript" src="../../script/common/common.js"></script>
+<script type="text/javascript" src="../../script/common/path.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/bizjs/index.js"></script>
+<script>
+
+
+apiready = function(){
+  getList();
+  api.parseTapmode();
+}
+
+function getList(){
+  $.post(path + "messageFile/findMessageFileByUserId.action",{
+    userid: localStorage.userid
+  },function(data){
+// alert(data + localStorage.userid);
+    if(data){
+      // alert(data);
+      var data = JSON.parse(data);
+
+      var infoList = "";
+
+      if(data.length <= 0){
+          $("#miaoshu").html("暂无数据");
+      }
+
+      data.forEach(function(i){
+          infoList += "<li style='height:6rem;line-height:1.8rem;' class='aui-list-item' onclick=see('" + i.webname + "','" + i.id + "','" + i.filename + "')>";//
+          infoList += "<div class='aui-media-list-item-inner'>";
+          infoList += "<div class='aui-list-item-inner'>";
+          infoList += "<div class='aui-list-item-title name'><span class='words'></span>";
+          infoList += "<span class='words'>";
+
+          if(i.webname){
+            if(25 < i.oldname.length){
+              infoList += i.oldname.substring(0,25) + "...";
+            }else{
+              infoList += i.oldname;
+            }
+          }
+
+          infoList += "</span>";
+
+          infoList += "</div>";
+          infoList += "<div class='aui-list-item-text value words'><span class='words'>";
+          infoList += "<span style='margin-right:2rem;'>" + i.uploaduser + "</span>";
+
+          // var timestamp = i.template.uCreateTime;
+          // var d = new Date(timestamp);    //根据时间戳生成的时间对象
+          // var date = (d.getFullYear()) + "-" +
+          //      (d.getMonth() + 1) + "-" +
+          //      (d.getDate()) + " " +
+          //      (d.getHours()) + ":" +
+          //      (d.getMinutes()) + ":" +
+          //      (d.getSeconds());
+
+          infoList += i.uploaddate;
+          infoList += "</span>";
+
+          infoList += "<div class='deletedword' tapmode onclick='deleted(" + i.id + ");event.cancelBubble=true;'>删除";
+          infoList += "</div>";
+          infoList += "</div>";
+          infoList += "</div>";
+          infoList += "</li>";
+      })
+
+      $("#infoList").html(infoList);
+    }
+
+  })
+}
+
+function detail(qid,uid,utype){
+  // alert(qid + "===" + uid + "===" + utype);
+  localStorage.setItem("qid",qid);
+  localStorage.setItem("uid",uid);
+  localStorage.setItem("uType",utype);
+  api.openWin({
+      name: 'showtask',
+      url: 'html/task/showtask.html',
+      pageParam: {
+          name: 'test'
+      }
+  });
+}
+
+function deleted(id){
+  api.confirm({
+      title: '提示',
+      msg: '您真的确定要删除吗？',
+      buttons: ['确定', '取消']
+  }, function(ret, err){
+      if( 1 == ret.buttonIndex ){
+        $.post(path + "messageFile/deletedMessageFile.action",{
+          messageid: id,
+          userid: localStorage.userid
+        },function(data){
+         //  alert(data);
+          if(data){
+             window.location.reload();
+          }
+        })
+      }
+  });
+}
+
+function see(url,id,name){
+  // window.open(webname);
+  api.actionSheet({
+		    title: name,
+		    cancelTitle: '取消',
+		    buttons: ['下载文件', '打开文件']
+		}, function(ret, err) {
+		    if(ret.buttonIndex==1){
+          api.confirm({
+              title: '提示',
+              msg: '确认下载吗？',
+              buttons: ['确定', '取消']
+          }, function(ret, err){
+              if( ret.buttonIndex == 1 ){
+                   downloadFile('1',url,id,name);
+              }
+          });
+        }else if(ret.buttonIndex==2){
+          downloadFile('2',url,id,name);
+        }
+		});
+}
+
+function downloadFile(type,url,id,name){
+        api.download({
+            url: url,
+            savePath: 'fs://idtong/'+name,
+            report: false,
+            cache: true,
+            allowResume: true
+        }, function(ret, err) {
+          console.log('downloadFile:'+JSON.stringify(ret));
+            if (ret.state == 1) {
+              if(type=='1'){
+                api.alert({
+                  msg:'文件下载成功，保存路径：'+ret.savePath
+                         });
+              }else{
+                  openFile(ret.savePath);
+                }
+                api.hideProgress();
+            } else if (ret.state == 2){
+              thisToast('文件下载失败');
+            api.hideProgress();
+            }
+        });
+	}
+
+	function openFile(path){
+	console.log(path);
+		var docReader = api.require('docReader');
+		docReader.open({
+		    path: path,
+		    autorotation: false
+		}, function(ret, err) {
+			console.log('openFile:'+JSON.stringify(ret));
+		    if (ret.status) {
+
+		    } else {
+		    console.log('openFileerr:'+JSON.stringify(err));
+		        thisToast('打开文件失败');
+		    }
+		});
+	}
+
+</script>

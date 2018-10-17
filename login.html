@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>用户登录</title>
+    <link rel="stylesheet" type="text/css" href="./css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="./css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="./css/common/common.css"/>
+    <link rel="stylesheet" type="text/css" href="./css/bizcss/login.css"/>
+
+    <script type="text/javascript" src="script/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="script/common/path.js"></script>
+    <script type="text/javascript" src="script/common/common.js"></script>
+    <script type="text/javascript" src="script/api.js"></script>
+
+</head>
+<body>
+    <header id="header">
+      <h1>登录</h1>
+    </header>
+</body>
+</html>
+<script>
+apiready = function(){
+  issignout();
+  var headerH = $api.byId('header');
+  headerH = $api.offset(header).h;
+  //
+  // api.addEventListener({
+  //     name: 'keyback'
+  // }, function(ret, err){
+  //     // 不做处理
+  // });
+  api.openFrame({
+      name: 'login_frame',
+      url: 'login_frame.html',
+      rect: {
+          x: 0,
+          y: headerH,
+          w: "auto",
+          h: api.winHeight - headerH
+      },
+      pageParam: {
+          name: 'test'
+      },
+      bounces: true,
+      bgColor: 'rgba(0,0,0,0)',
+      vScrollBarEnabled: true,
+      hScrollBarEnabled: true
+  });
+
+  api.parseTapmode();
+}
+</script>

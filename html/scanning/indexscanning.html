@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>扫描</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/common/common.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/bizcss/scanning.css"/>
+
+</head>
+<body>
+
+</body>
+</html>
+
+<script type="text/javascript" src="../../script/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/common/common.js"></script>
+<script type="text/javascript" src="../../script/common/path.js"></script>
+
+<script>
+apiready = function () {
+  var FNScanner = api.require('FNScanner');
+
+  FNScanner.openScanner({
+      autorotation: true,
+      saveImg: {
+        path: 'fs://qrCode.jpg',  //字符串类型；保存的文件路径；若路径不存在，则创建此路径，只支持fs://协议
+        w: 200,              //（可选项）数字类型；生成图片的宽度，默认：200
+        h: 200
+      }
+    //  saveToAlbum: true
+  }, function(ret, err) {
+      if (ret) {
+          // var ret = JSON.stringify(ret);
+          // alert(ret);
+
+          if("cancel" == ret.eventType){
+              FNScanner.closeView();
+              window.location.href="../../index.html";
+          }else{
+            // alert(ret.content);
+            if(ret.content){
+              var str = getCaption(ret.content,"?");
+              // alert(str);
+              if(str && str!=ret.content){
+                var uType = getCaption(ret.content,"\=");
+                var qid = ret.content.match(/=(\S*)&/)[1];
+                // alert(uType + "====" + qid + "===" + localStorage.userid);
+
+                localStorage.setItem("qid",qid);
+                localStorage.setItem("uType",uType);
+
+                if(toshowtask(localStorage.userid, qid)){
+                  api.openWin({
+                      name: 'showtask',
+                      url: '../task/showtask.html',
+                  });
+                  // alert(ret.content);
+                  // window.location.href=ret.content;
+                }
+              }else{
+                alert("无效的二维码！");
+                window.location.reload();
+              }
+            }
+          }
+      }
+  });
+  api.parseTapmode();
+}
+
+function toshowtask(userid,qid){
+	var result = false;
+	$.ajax({
+		type  : "POST",
+		url   : path + "qrcode/isSeeUsingTemplate_form.action",
+		data  : {
+      "userid": userid,
+      "qid": qid
+    },
+		async : false,
+		error : function(request){
+		},
+		success : function(data){
+      // alert("data====" + data);
+			// var data = JSON.parse(data);
+      if(data){
+        result = true;
+      }
+		}
+	});
+	return result;
+}
+</script>

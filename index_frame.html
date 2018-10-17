@@ -1,0 +1,233 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>首页列表</title>
+    <link rel="stylesheet" type="text/css" href="./css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="./css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="./css/common/common.css"/>
+    <link rel="stylesheet" type="text/css" href="./css/bizcss/index.css"/>
+    <style>
+      #miaoshu{
+        text-align:center;
+        padding-top:5px;
+        paddingbottom:5px;
+        color: #9d9d9d;
+        font-size:1rem;
+      }
+
+      .rightwords{
+        float:right;
+        margin-right:1rem;
+        color:#9d9d9d;
+      }
+
+      .deletedword{
+        float:right;
+        margin-right:1rem;
+        color:#ff0000;
+        border:1px solid #ff0000;
+        border-radius: 5px;
+        padding-left:1rem;
+        padding-right:1rem;
+        font-size: 13px;
+        z-index: 999;
+      }
+    </style>
+</head>
+<body>
+<div class="aui-content aui-margin-b-15">
+  <ul class="aui-list aui-media-list" id="infoList">
+      <!-- <li class="aui-list-item">
+          <div class="aui-media-list-item-inner">
+              <div class="aui-list-item-inner">
+                  <div class="aui-list-item-text">
+                      <div class="aui-list-item-title">带有媒体的列表二</div>
+                      <div class="aui-list-item-right">08:00</div>
+                  </div>
+                  <div class="aui-list-item-text">
+                      在下方我们加入了aui-info信息条
+                  </div>
+              </div>
+          </div>
+      </li> -->
+  </ul>
+</div>
+
+<div id="miaoshu"></div>
+<div class="no-data">暂无数据</div>
+
+</body>
+</html>
+
+<script type="text/javascript" src="script/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="script/aui-dialog.js" ></script>
+<script type="text/javascript" src="script/aui-toast.js" ></script>
+<script type="text/javascript" src="script/common/common.js"></script>
+<script type="text/javascript" src="script/common/path.js"></script>
+<script type="text/javascript" src="script/api.js"></script>
+<script type="text/javascript" src="script/bizjs/index.js"></script>
+<script>
+apiready = function(){
+  getList();
+  api.parseTapmode();
+}
+
+function ref(){
+  window.location.reload();
+}
+
+function getList(){
+  $(".no-data").html("正在加载……");
+  $.post(path + "qrcode/findUsingTemplate_form.action",{
+    userid: localStorage.userid
+    // status:2
+  },function(data){
+// alert(data + localStorage.userid);
+    if(data){
+      // alert(data);
+      var data = JSON.parse(data);
+      var data = JSON.parse(data.toString());
+
+      var infoList = "";
+
+
+
+      data.forEach(function(i){
+        if(i.qrcode && i.template){
+          infoList += "<li style='height:6rem;line-height:1.8rem;' class='aui-list-item' onclick='detail(" + i.qrcode.id + "," + i.template.id+ "," + i.template.type+ ")'>";//
+          infoList += "<div class='aui-media-list-item-inner'>";
+          infoList += "<div class='aui-list-item-inner'>";
+          infoList += "<div class='aui-list-item-title name'><span class='words'></span>";
+          infoList += "<span class='words'>";
+
+          var uType = "";
+          switch (i.template.type) {
+            case 1: uType = "[单项]";
+              infoList += "<font color='#03aaf4'>" + uType + "</font>";
+              break;
+            case 2: uType = "[多项]";
+            infoList += "<font color='#03aaf4'>" + uType + "</font>";  //  e5af09
+              break;
+            case 3: uType = "[介绍]";
+            infoList += "<font color='#03aaf4'>" + uType + "</font>";  //0acc48
+              break;
+            case 4: uType = "[定测]";
+            infoList += "<font color='#03aaf4'>" + uType + "</font>";
+              break;
+            case 5: uType = "[安装位置]";
+            infoList += "<font color='#03aaf4'>" + uType + "</font>";
+              break;
+            case 6: uType = "[单项电缆铭牌]";
+            infoList += "<font color='#03aaf4'>" + uType + "</font>";
+              break;
+            case 7: uType = "[多项电缆铭牌]";
+            infoList += "<font color='#03aaf4'>" + uType + "</font>";
+              break;
+            default:
+          }
+
+          // infoList += "<font color='#03aaf4'>" + uType + "</font>";
+
+          if(i.qrcode.name){
+            if(15 < i.qrcode.name.length){
+              infoList += i.qrcode.name.substring(0,14) + "...";
+            }else{
+              infoList += i.qrcode.name;
+            }
+          }
+
+          infoList += "</span>";
+
+          infoList += "<div class='words rightwords'>";
+          if(3 == i.status){
+              infoList += "已完成";
+          }else{
+              infoList += "进行中";
+          }
+          infoList += "</div>";
+          infoList += "</div>";
+          infoList += "<div class='aui-list-item-text value words'><span class='words'>";
+          infoList += "<span style='margin-right:2rem;'>" + i.template.creater + "</span>";
+
+          var timestamp = i.template.createTime;
+          var d = new Date(timestamp);    //根据时间戳生成的时间对象
+          var date = (d.getFullYear()) + "-" +
+               (d.getMonth() + 1) + "-" +
+               (d.getDate()) + " " +
+               (d.getHours()) + ":" +
+               (d.getMinutes()) + ":" +
+               (d.getSeconds());
+
+          infoList += date;
+          infoList += "</span>";
+
+          infoList += "<div class='deletedword' tapmode onclick='deleted(" + i.qrcode.id + ");event.cancelBubble=true;'>删除";
+          infoList += "</div>";
+          infoList += "</div>";
+          infoList += "</div>";
+          infoList += "</li>";
+        }
+      })
+
+      $("#infoList").html(infoList);
+      if("" == infoList){
+          $(".no-data").html("暂无数据");
+      }else{
+        $(".no-data").html("已加载完所有数据数据");
+      }
+
+    }else{
+      $(".no-data").html("暂无数据");
+    }
+
+  })
+}
+
+function detail(qid,uid,utype){
+  // alert(qid + "===" + uid + "===" + utype);
+  localStorage.setItem("qid",qid);
+  localStorage.setItem("uid",uid);
+  localStorage.setItem("uType",utype);
+  // var uidinfo = finduidbyqid(qid);
+  // uidinfo = JSON.parse(uidinfo);
+  // localStorage.setItem("qname",uidinfo.info.name);
+
+  if(3 == Number(utype)){
+    var messige = findmessige();
+    localStorage.setItem("messige",messige)
+
+    var img = findimg()
+    localStorage.setItem("img",img)
+  }
+
+  api.openWin({
+      name: 'showtask',
+      url: 'html/task/showtask.html',
+      reload: true,
+      scaleEnabled:true
+  });
+}
+
+function deleted(qid){
+  api.confirm({
+      title: '提示',
+      msg: '您真的确定要删除吗？',
+      buttons: ['确定', '取消']
+  }, function(ret, err){
+      if(1 == ret.buttonIndex){
+        $.post(path + "qrcode/deletedByUserIdAndQId_form.action",{
+           qid: qid,
+           userid: localStorage.userid
+        },function(data){
+          //  alert(data);
+           if(data){
+              window.location.reload();
+           }
+        })
+      }
+  });
+}
+</script>

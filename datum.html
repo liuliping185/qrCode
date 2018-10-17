@@ -1,0 +1,147 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>资料</title>
+    <link rel="stylesheet" type="text/css" href="css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="css/common/common.css"/>
+    <link rel="stylesheet" type="text/css" href="css/bizcss/datum.css"/>
+</head>
+<body>
+  <header id="header">
+    <h1>资&nbsp;&nbsp;&nbsp;&nbsp;料</h1>
+    <div class='right' tapmode onclick='scanning()'></div>
+  </header>
+
+<div id="wrap" class="flex-wrap flex-vertical">
+    <div id="main" class="flex-con words" >
+    </div>
+
+    <footer id="footer" class="border-t">
+        <ul class="flex-wrap">
+            <li tapmode onclick="randomSwitchBtn( this,'index.html' );" class="flex-con" >首页</li>
+            <li tapmode onclick="randomSwitchBtn( this,'task.html' );" class="flex-con" >任务</li>
+            <li tapmode onclick="randomSwitchBtn( this,'' );" class="flex-con active" >资料</li>
+            <li tapmode onclick="randomSwitchBtn( this,'set.html' );" class="flex-con" >设置</li>
+        </ul>
+    </footer>
+</div>
+
+
+</body>
+</html>
+
+<script type="text/javascript" src="script/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="script/common/path.js"></script>
+<script type="text/javascript" src="script/common/common.js"></script>
+<script type="text/javascript" src="script/api.js"></script>
+<script type="text/javascript" src="script/bizjs/datum.js"></script>
+<!-- <script type="text/javascript" src="script/bizjs/footer.js"></script> -->
+<script>
+apiready = function(){
+  islogin();
+  issignout();
+  var headerH = $api.byId('header');
+  headerH = $api.offset(header).h;
+  var footerH = $api.byId('footer');
+  footerH = $api.offset(footer).h;
+  api.openFrame({
+      name: 'datum_frame',
+      url: 'html/datum/datum_frame.html',
+      rect: {
+          x: 0,
+          y: headerH,
+          w: "auto",
+          h: api.winHeight - footerH - headerH
+      },
+      pageParam: {
+          name: 'test'
+      },
+      bounces: true,
+      bgColor: 'rgba(0,0,0,0)',
+      vScrollBarEnabled: true,
+      hScrollBarEnabled: true
+  });
+
+  api.parseTapmode();
+}
+
+// $(function(){
+//   getContant();
+// })
+
+function getContant(){
+  $.post( path + "messageFile/findMessageFileByUserId.action",{
+      userid: localStorage.userid
+  },function(data){
+    if(data){
+    // alert(localStorage.userid);
+        // alert(data);
+      console.log(data);
+        var data = JSON.parse(data);
+
+        var lineList = "";
+        data.forEach(function(i){
+          lineList += "<div class='e_lineList'>";
+          lineList += "<div class='lineinfo')>";
+          lineList += "<strong><a href='" + i.webname + "'>";
+          if(25 < i.oldname.length){
+            lineList += i.oldname.substring(0,25) + "...";
+          }else{
+            lineList += i.oldname;
+          }
+          lineList += "</a></strong>";
+          lineList += "</div>";
+          lineList += "<div class='line'></div>";
+          lineList += "<div class='lineinfo'>发布人：" + i.uploaduser + "</div>";
+          lineList += "<div class='line'></div>";
+          lineList += "<div class='lineinfo'>创建时间：" + i.uploaddate+ "</div>";
+          lineList += "</div>";
+        })
+
+        $("#lineList").html(lineList);
+    }
+  })
+}
+
+// function aaa(con){
+//   alert(con);
+//   window.location.href=con;
+// }
+
+function scanning(){
+  api.closeFrame({
+      name: 'datum_frame'
+  });
+  api.openWin({
+      name: 'datumscanning',
+      url: 'html/scanning/datumscanning.html',
+      pageParam: {
+          name: 'test'
+      }
+  });
+}
+
+// 随意切换按钮
+function randomSwitchBtn( tag,mineUrl ) {
+  localStorage.setItem("qrcodestatus","");
+  if(mineUrl){
+      api.closeFrame({
+          name: 'datum_frame'
+      });
+      api.openWin({
+        name : "root",
+        url : mineUrl,
+        animation:{
+            type:"movein",                //动画类型（详见动画类型常量）
+            subType:"from_right",       //动画子类型（详见动画子类型常量）
+            duration:300                //动画过渡时间，默认300毫秒
+        }
+      });
+  }
+ }
+
+</script>

@@ -1,0 +1,52 @@
+#info{
+  width:95%;
+  margin-left:2.5%;
+  margin-right:2.5%;
+  /*margin-top:2.5rem;*/
+}
+
+.imgblock{
+  width:30%;
+  height:5rem;
+  float:left;
+  margin-left:2.5%;
+  margin-top:6%;
+}
+
+.tipon{
+	z-index:9999;
+	position:fixed;
+	top:55%;
+	left:100%;
+	width:300px;
+  /*margin-left:10%;*/
+	height:300px;
+	margin:-180px 0 0 -330px;
+	border-radius:15px;
+	border:solid 2px #666;
+	background-color:#fff;
+	display:none;
+	box-shadow: 0 0 10px #666;
+}
+
+.helpmask {
+	z-index: 9998;
+	position:fixed;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	background:#000;
+	opacity:0.4;
+	filter:alpha(opacity=40);
+	display:none
+}
+
+.imgcss{
+  width: 100%;
+}
+
+#bigimg{
+  width: 100%;
+  margin-top:3rem;
+}
